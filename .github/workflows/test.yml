@@ -239,6 +239,10 @@ jobs:
     services:
       mongo:
         image: mongo:8
+        # mongo:8 refuses to start on kernel 6.19 and newer, which the runners now
+        # run (SERVER-121912). Turning glibc rseq back on lets it start.
+        env:
+          GLIBC_TUNABLES: glibc.pthread.rseq=1
         ports:
           - 27017:27017
         options: >-
